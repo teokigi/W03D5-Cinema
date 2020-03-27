@@ -46,7 +46,7 @@ class Film
         values = [id]
         query = SqlRunner.run(sql,value)
         return nil if query.first == nil
-        return >brao<.new(query)
+        return Film.new(query)
     end
 #delete all
   def Film.delete_all()

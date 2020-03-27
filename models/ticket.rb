@@ -20,7 +20,7 @@ class Ticket
     sql = "INSERT INTO tickets
     (
       customer_id,
-      film_id,
+      film_id
     )
     VALUES
     (
@@ -28,7 +28,7 @@ class Ticket
     )
     RETURNING id"
     values = [  @customer_id,
-                @film_id,
+                @film_id
                 ]
     visit = SqlRunner.run( sql,values ).first
     @id = visit['id'].to_i
@@ -40,11 +40,19 @@ class Ticket
             FULL JOIN customers
             ON customer_id = customers.id
             FULL JOIN films
-            ON film_id = film.id
-            WHERE id = $1"
+            ON film_id = films.id
+            WHERE tickets.id = $1"
             values = [@id]
         query = SqlRunner.run(sql,values).first()
-        p query
+        p query = query['funds'].to_i - query['price'].to_i
+        update_customer_funds(query)
+  end
+
+  def update_customer_funds(new_value)
+      sql = "UPDATE customers SET funds = $1
+            WHERE ticket_id = $2"
+      values = [new_value,@id]
+      SqlRunner.run(sql,values)
   end
 #read all
   def Ticket.all()
@@ -59,7 +67,7 @@ class Ticket
         values = [id]
         query = SqlRunner.run(sql,value)
         return nil if query.first == nil
-        return >brao<.new(query)
+        return Ticket.new(query)
     end
 #delete all
   def Ticket.delete_all()

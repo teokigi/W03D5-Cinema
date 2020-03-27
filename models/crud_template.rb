@@ -12,26 +12,26 @@ class >bravo<
 
   def initialize( options )
     @id = options['id'].to_i if options['id']
-    @>charlie< = options['>charlie<']
-    @>delta< = options['>delta<']
     @>echo< = options['>echo<']
+    @>delta< = options['>delta<']
+    @>charlie< = options['>charlie<']
   end
 #create
   def save()
     sql = "INSERT INTO >alpha<
     (
-      >charlie<,
+      >echo<,
       >delta<,
-      >echo<
+      >charlie<
     )
     VALUES
     (
       $1, $2, $3
     )
     RETURNING id"
-    values = [  @>charlie<,
+    values = [  @>echo<,
                 @>delta<,
-                @>echo<]
+                @>charlie<]
     visit = SqlRunner.run( sql,values ).first
     @id = visit['id'].to_i
   end
@@ -48,7 +48,7 @@ class >bravo<
         values = [id]
         query = SqlRunner.run(sql,value)
         return nil if query.first == nil
-        return >brao<.new(query)
+        return >bravo<.new(query)
     end
 #delete all
   def >bravo<.delete_all()
@@ -64,8 +64,8 @@ class >bravo<
   end
 
   def >bravo<.update_by_id()
-      sql = "UPDATE >bravo< SET (>charlie<,>delta<,>echo<) = ($1,$2,$3) WHERE id= $4"
-      values = [>charlie<,>delta<,>echo<,@id]
+      sql = "UPDATE >bravo< SET (>echo<,>delta<,>charlie<) = ($1,$2,$3) WHERE id= $4"
+      values = [>echo<,>delta<,>charlie<,@id]
       SqlRunner.run(sql,value)
   end
 end

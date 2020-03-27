@@ -1,6 +1,11 @@
 require('pry-byebug')
+require_relative('models/ticket.rb')
+require_relative('models/film.rb')
+require_relative('models/ticket.rb')
 
-ticket = ({'customer_id'=>1,'film_id'=>1})
+
+ticket.delete_all
+ticket = Ticket.new({'customer_id'=>1,'film_id'=>1})
 ticket.save
 # ticket = ({'customer_id'=>1,'film_id'=>2})
 # ticket.save
