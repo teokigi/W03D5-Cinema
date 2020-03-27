@@ -62,4 +62,10 @@ class >bravo<
       values = [id]
       query = SqlRunner.run(sql,value)
   end
+
+  def >bravo<.update_by_id()
+      sql = "UPDATE >bravo< SET (>charlie<,>delta<,>echo<) = ($1,$2,$3) WHERE id= $4"
+      values = [>charlie<,>delta<,>echo<,@id]
+      SqlRunner.run(sql,value)
+  end
 end
