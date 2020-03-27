@@ -44,14 +44,14 @@ class Ticket
             WHERE tickets.id = $1"
             values = [@id]
         query = SqlRunner.run(sql,values).first()
-        p query = query['funds'].to_i - query['price'].to_i
-        update_customer_funds(query)
+        new_funds = query['funds'].to_i - query['price'].to_i
+        update_customer_funds(query['customer_id'],new_funds)
   end
 
-  def update_customer_funds(new_value)
+  def update_customer_funds(id,funds)
       sql = "UPDATE customers SET funds = $1
-            WHERE ticket_id = $2"
-      values = [new_value,@id]
+            WHERE id = $2"
+      values = [funds,@id]
       SqlRunner.run(sql,values)
   end
 #read all
