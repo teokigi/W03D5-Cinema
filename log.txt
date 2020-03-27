@@ -1,0 +1,20 @@
+create db - cccinema
+code the sql file in db/
+run generate tables through sql file
+create customers data
+crud it
+create films
+crud it
+craete tickets
+crud it
+in tickets class, code a read: all films by 1 customer
+in ticket class, code a read: all customers viewing 1 film
+mvp checkpoint => basic extensions
+in ticket class, code a update: customer.funds loses value = film.price
+total tickets bought by 1 customer
+total customers who viewed 1 film
+basic extension checkpoint => advanced extension
+create 'screenings' table
+in screenings find the show time with the highest ticket sales for 1 film
+in screenings limit tickets per show time
+additiona extensions?
