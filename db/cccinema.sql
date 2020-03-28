@@ -22,7 +22,7 @@ CREATE TABLE screenings
 (
 id SERIAL PRIMARY KEY,
 film_id INT REFERENCES films(id) ON DELETE CASCADE,
-show_time VARCHAR(255),
+showtime VARCHAR(255),
 availability INT NOT NULL,
 sales INT DEFAULT 0
 );

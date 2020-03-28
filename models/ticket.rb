@@ -14,7 +14,7 @@ class Ticket
         sql = "INSERT INTO tickets
         (
           customer_id,
-          film_id
+          film_id,
         )
         VALUES
         (

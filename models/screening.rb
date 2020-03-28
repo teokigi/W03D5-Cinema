@@ -33,7 +33,7 @@ class Screening
     values = [  @film_id,
                 @showtime,
                 @availability]
-    visit = SqlRunner.run( sql,values ).first
+    visit = SqlRunner.run(sql,values).first
     @id = visit['id'].to_i
   end
 #read all
@@ -49,7 +49,7 @@ class Screening
         values = [id]
         query = SqlRunner.run(sql,value)
         return nil if query.first == nil
-        return >bravo<.new(query)
+        return Screening.new(query)
     end
 #delete all
   def Screening.delete_all()
