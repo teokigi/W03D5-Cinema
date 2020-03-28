@@ -43,7 +43,7 @@ class Screening
     sql = "SELECT * FROM screenings"
     query = SqlRunner.run(sql,[])
     return nil if query.first == nil
-    return query.map { |value| screenings.new( value ) }
+    return query.map { |value| Screening.new( value ) }
   end
   #find by id
     def Screening.find_by_id(id)

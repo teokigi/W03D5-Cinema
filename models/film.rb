@@ -31,7 +31,7 @@ class Film
         sql = "SELECT * FROM films"
         query = SqlRunner.run(sql,[])
         return nil if query.first == nil
-        return query.map { |value| films.new( value ) }
+        return query.map { |value| Film.new( value ) }
     end
         #find by id
     def Film.find_by_id(id)
@@ -45,7 +45,9 @@ class Film
     def Film.customers_by_film(id)
         sql =   "SELECT customers.name FROM customers
                 INNER JOIN tickets
-                ON customer.id = customer_id
+                ON customers.id = customer_id
+                INNER JOIN screenings
+                ON screening_id = screenings.id
                 WHERE film_id = $1"
         values = [id]
         query = SqlRunner.run(sql,values)

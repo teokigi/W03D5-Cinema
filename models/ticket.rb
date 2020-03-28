@@ -84,7 +84,7 @@ class Ticket
         sql = "SELECT * FROM tickets"
         query = SqlRunner.run(sql,[])
         return nil if query.first == nil
-        return query.map { |value| tickets.new( value ) }
+        return query.map { |value| Ticket.new( value ) }
     end
         #Read by id
     def Ticket.find_by_id(id)

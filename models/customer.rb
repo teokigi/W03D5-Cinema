@@ -32,7 +32,7 @@ class Customer
         sql = "SELECT * FROM customers"
         query = SqlRunner.run(sql,[])
         return nil if query.first == nil
-        return query.map { |value| customers.new( value ) }
+        return query.map { |value| Customer.new( value ) }
     end
         #read by id
     def Customer.find_by_id(id)
@@ -44,13 +44,15 @@ class Customer
     end
         #read all films by customer
     def Customer.films_by_customer(id)
-        sql =   "SELECT films.title FROM films
-                 INNER JOIN tickets
+        sql =   "SELECT films.title, screenings.showtime FROM films
+                 FULL JOIN screenings
                  ON film_id = films.id
+                 FULL JOIN tickets
+                 ON screening_id = screenings.id
                  WHERE customer_id = $1"
         values = [id]
         query = SqlRunner.run(sql,values)
-        return query.map{|film|film['title']}
+        return query.map{|film|film}
     end
         #read all tickets by customer
     def Customer.all_tickets(id)

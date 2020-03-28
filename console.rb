@@ -5,16 +5,30 @@ require_relative('models/customer.rb')
 require_relative('models/screening.rb')
 
 loop_program = "1"
-while loop_program == "1"
-    p "1. delete all"
-    p "2. repopulate ticket"
-    p "3. get all films viewed by 1 customer"
-    p "4. get all customers who has seen a film"
-    p "5. total tickets by 1 customer"
-    p "6. Number of customers seeing 1 film"
-    p "7. Highest screening sale in 1 film"
-    p "8. list showtimes of film"
-    case gets.chomp
+p "1. delete all"
+p "2. repopulate ticket"
+p "3. list a table"
+p "4. get all films viewed by 1 customer"
+p "5. get how many customers who has seen a film"
+p "6. total tickets by 1 customer"
+p "7. Number of customers seeing 1 film"
+p "8. Highest screening sale in 1 film"
+p "9. list showtimes of film"
+p "q. quit program"
+while loop_program != "q"
+        p "Main Menu (0. to repeat menu commands)"
+    case loop_program = gets.chomp
+        when "0"
+            p "1. delete all"
+            p "2. repopulate ticket"
+            p "3. list a table"
+            p "4. get all films viewed by 1 customer"
+            p "5. get how many customers who has seen a film"
+            p "6. total tickets by 1 customer"
+            p "7. Number of customers seeing 1 film"
+            p "8. Highest screening sale in 1 film"
+            p "9. list showtimes of film"
+            p "q. quit program"
         when "1"
             Customer.delete_all
             Film.delete_all
@@ -157,37 +171,61 @@ while loop_program == "1"
             ticket20.save
             p "table repopulated."
         when "3"
+            p "::Read all sub-menu::"
+            p "1. list all films"
+            p "2. list all screenings"
+            p "3. list all customers"
+            p "4. list all tickets"
+            case gets.chomp
+                when "1"
+                    #list all films
+                    query = Film.all
+                    query.each{|fil_class|p "id:#{fil_class.id}, Film:#{fil_class.title}, Price:#{fil_class.price}"}
+                when "2"
+                    #list all screenings
+                    query = Screening.all
+                    query.each{|scr_class|p "id:#{scr_class.id}, Film id:#{scr_class.film_id},showtimes:#{scr_class.showtime},available tickets:#{scr_class.availability}"}
+                when "3"
+                    #list all customers
+                    query = Customer.all
+                    query.each{|cus_class|p "id:#{cus_class.id},name:#{cus_class.name},funds:#{cus_class.funds}"}
+                when "4"
+                    #list all tickets
+                    query = Ticket.all
+                    query.each{|tic_class|p "id:#{tic_class.id},customer id:#{tic_class.customer_id},screening id:#{tic_class.screening_id}"}
+            end
+        when "4"
             p "Enter Customer id"
             answer = gets.chomp
             query = Customer.films_by_customer(answer.to_i)
             query.each{|film|p film}
-        when "4"
+        when "5"
             p "Enter Movie id"
             answer = gets.chomp
             query = Film.customers_by_film(answer.to_i)
-            query.each{|customer|p customer}
-        when "5"
+            p " this film has been seen by #{query.length} customers"
+        when "6"
             p "enter customer id"
             answer = gets.chomp
             query = Customer.all_tickets(answer.to_i)
             p "customer has bought a total of #{query} tickets."
-        when "6"
+        when "7"
             p "enter film id"
             anwer = gets.chomp
             query = Film.all_customers(answer.to_i)
             p "Film has had a total of #{query} customer sales"
-        when "7"
+        when "8"
             p "enter film id"
             answer = gets.chomp
             query = Film.highest_screening_sales(answer.to_i)
             p "The #{query} showing had the most sales"
-        when "8"
+        when "9"
             p "enter film id"
             answer = gets.chomp
             query = Film.screen_times(answer.to_i)
             p "Screen time for film is:"
             query.each{|time| p "#{time['showtime']}"}
+
     end
-    p "1.Loop program 2.end program"
-    loop_program = gets.chomp
+
 end
