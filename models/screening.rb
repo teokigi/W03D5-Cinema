@@ -3,35 +3,36 @@ require_relative("../db/sql_runner")
 #template find and replace
 # tablename = screenings
 # classname capitalize = Screening
-# first variable = >echo<
-# second varible = >delta<
-# third variable = >charlie<
+# first variable = film_id
+# second varible = showtime
+# third variable = availability
 # code .to_i for relevant variables in initialize that are integers
 class Screening
 
 
   def initialize( options )
     @id = options['id'].to_i if options['id']
-    @>echo< = options['>echo<']
-    @>delta< = options['>delta<']
-    @>charlie< = options['>charlie<']
+    @film_id = options['film_id'].to_i
+    @showtime = options['showtime']
+    @availability = options['availability'].to_i
+    @sales = 0
   end
 #create
   def save()
     sql = "INSERT INTO screenings
     (
-      >echo<,
-      >delta<,
-      >charlie<
+      film_id,
+      showtime,
+      availability
     )
     VALUES
     (
       $1, $2, $3
     )
     RETURNING id"
-    values = [  @>echo<,
-                @>delta<,
-                @>charlie<]
+    values = [  @film_id,
+                @showtime,
+                @availability]
     visit = SqlRunner.run( sql,values ).first
     @id = visit['id'].to_i
   end
@@ -64,8 +65,8 @@ class Screening
   end
 
   def Screening.update_by_id()
-      sql = "UPDATE Screening SET (>echo<,>delta<,>charlie<) = ($1,$2,$3) WHERE id= $4"
-      values = [>echo<,>delta<,>charlie<,@id]
+      sql = "UPDATE Screening SET (film_id,showtime,availability) = ($1,$2,$3) WHERE id= $4"
+      values = [film_id,showtime,availability,@id]
       SqlRunner.run(sql,value)
   end
 end
