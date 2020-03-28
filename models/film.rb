@@ -51,6 +51,15 @@ class Film
         query = SqlRunner.run(sql,values)
         return query.map{|customer|customer['name']}
     end
+        #Total customers who has viewed this film
+    def Film.all_customers(id)
+        sql =   "SELECT COUNT(tickets) FROM tickets
+                WHERE film_id = $1"
+        values = [id]
+        query = SqlRunner.run(sql,values).first
+        return query['count']
+    end
+
         #delete all
     def Film.delete_all()
         sql = "DELETE FROM films"

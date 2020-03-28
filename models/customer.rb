@@ -52,6 +52,14 @@ class Customer
         query = SqlRunner.run(sql,values)
         return query.map{|film|film['title']}
     end
+        #read all tickets by customer
+    def Customer.all_tickets(id)
+        sql = "SELECT count(id) FROM tickets
+                WHERE customer_id = $1"
+        values = [id]
+        query = SqlRunner.run(sql,values).first
+        return query['count']
+    end
         #delete all
     def Customer.delete_all()
         sql = "DELETE FROM customers"

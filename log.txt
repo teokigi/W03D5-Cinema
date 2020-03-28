@@ -14,6 +14,7 @@ in ticket class, code a update: customer.funds loses value = film.price
 total tickets bought by 1 customer
 total customers who viewed 1 film
 basic extension checkpoint => advanced extension
+
 create 'screenings' table
 in screenings find the show time with the highest ticket sales for 1 film
 in screenings limit tickets per show time

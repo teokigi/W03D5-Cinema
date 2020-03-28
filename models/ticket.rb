@@ -9,7 +9,7 @@ class Ticket
         @customer_id = options['customer_id']
         @film_id = options['film_id']
     end
-        #create & deduct film.rpice from customer.funds
+        #create & deduct film.price from customer.funds
     def save()
         sql = "INSERT INTO tickets
         (

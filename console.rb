@@ -9,6 +9,7 @@ while loop_program == "1"
     p "2. repopulate ticket"
     p "3. get all films viewed by 1 customer"
     p "4. get all customers who has seen a film"
+    p "5. total tickets by 1 customer"
     case gets.chomp
         when "1"
             Customer.delete_all
@@ -88,6 +89,7 @@ while loop_program == "1"
             ticket19.save
             ticket20 = Ticket.new({'customer_id'=>customer10.id,'film_id'=>film1.id})
             ticket20.save
+            p "table repopulated."
         when "3"
             p "Enter Customer id"
             answer = gets.chomp
@@ -98,6 +100,16 @@ while loop_program == "1"
             answer = gets.chomp
             query = Film.customers_by_film(answer.to_i)
             query.each{|customer|p customer}
+        when "5"
+            p "enter customer id"
+            answer = gets.chomp
+            query = Customer.all_tickets(answer.to_i)
+            p "customer has bought a total of #{query} tickets."
+        when "6"
+            p "enter film id"
+            anwer = gets.chomp
+            query = Film.all_customers(answer.to_i)
+            p "Film has had a total of #{query} customer sales"
     end
     p "1.Loop program 2.end program"
     loop_program = gets.chomp
