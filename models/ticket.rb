@@ -2,29 +2,27 @@ require_relative("../db/sql_runner")
 
 class Ticket
 
-    attr_reader :id, :customer_id, :film_id
+    attr_reader :id, :customer_id, :screening_id
 
     def initialize( options )
         @id = options['id'].to_i if options['id']
-        @customer_id = options['customer_id']
-        @film_id = options['film_id']
+        @customer_id = options['customer_id'].to_i
+        @screening_id = options['screening_id'].to_i
     end
         #create & deduct film.price from customer.funds
     def save()
         sql = "INSERT INTO tickets
         (
           customer_id,
-          film_id,
+          screening_id
         )
         VALUES
         (
           $1, $2
         )
         RETURNING id"
-        values = [  @customer_id,
-                    @film_id
-                    ]
-        visit = SqlRunner.run( sql,values ).first
+        values = [@customer_id, @screening_id]
+        visit = SqlRunner.run(sql,values).first
         @id = visit['id'].to_i
         deduct_film_fee_from_customer()
     end
@@ -33,11 +31,14 @@ class Ticket
         sql =    "SELECT * FROM tickets
                   FULL JOIN customers
                   ON customer_id = customers.id
+                  FULL JOIN screenings
+                  ON screening_id = screening.id
                   FULL JOIN films
-                  ON film_id = films.id
+                  ON film_id = film.id
                   WHERE tickets.id = $1"
         values = [@id]
         query = SqlRunner.run(sql,values).first()
+        p query
         new_funds = query['funds'].to_i - query['price'].to_i
         update_customer_funds(query['customer_id'],new_funds)
     end
@@ -77,8 +78,8 @@ class Ticket
     end
 
     def Ticket.update_by_id()
-        sql = "UPDATE Ticket SET (customer_id,film_id) = ($1,$2,$3) WHERE id= $4"
-        values = [customer_id,film_id,@id]
+        sql = "UPDATE Ticket SET (customer_id,screening_id) = ($1,$2,$3) WHERE id= $4"
+        values = [customer_id,screening_id,@id]
         SqlRunner.run(sql,value)
     end
 end

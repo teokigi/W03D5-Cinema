@@ -16,6 +16,7 @@ while loop_program == "1"
             Customer.delete_all
             Film.delete_all
             Ticket.delete_all
+            Screening.delete_all
         when "2"
             customer01 = Customer.new({'name'=>'Bob Marley','funds'=> 100})
             customer01.save
