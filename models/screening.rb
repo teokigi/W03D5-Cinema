@@ -9,6 +9,8 @@ require_relative("../db/sql_runner")
 # code .to_i for relevant variables in initialize that are integers
 class Screening
 
+    attr_reader :id, :film_id, :showtime
+    attr_accessor :availability, :sales
 
   def initialize( options )
     @id = options['id'].to_i if options['id']

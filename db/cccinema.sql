@@ -20,10 +20,10 @@ CREATE TABLE films
 --create a screenings table.
 CREATE TABLE screenings
 (
-id SERIAL PRIMARY KEY,
-film_id INT REFERENCES films(id) ON DELETE CASCADE,
-showtime VARCHAR(255),
-availability INT NOT NULL,
+    id SERIAL PRIMARY KEY,
+    film_id INT REFERENCES films(id) ON DELETE CASCADE,
+    showtime VARCHAR(255),
+    availability INT NOT NULL,
 sales INT DEFAULT 0
 );
     --create a tickets table.
