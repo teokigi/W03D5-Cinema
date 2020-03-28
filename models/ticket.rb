@@ -46,34 +46,37 @@ class Ticket
     end
         #return all child table information from id
     def ticket_sales_transaction
-        sql =    "SELECT customers.funds,films.price,tickets.screening_id FROM tickets
-                  FULL JOIN customers
-                  ON customer_id = customers.id
-                  FULL JOIN screenings
-                  ON screening_id = screenings.id
-                  FULL JOIN films
-                  ON film_id = films.id
-                  WHERE tickets.id = $1"
+        sql =    "SELECT    customers.funds,
+                            films.price
+                 FROM tickets
+                 FULL JOIN customers
+                 ON customer_id = customers.id
+                 FULL JOIN screenings
+                 ON screening_id = screenings.id
+                 FULL JOIN films
+                 ON film_id = films.id
+                 WHERE tickets.id = $1"
         values = [@id]
         query = SqlRunner.run(sql,values).first()
         new_funds = query['funds'].to_i - query['price'].to_i
-        update_customer_funds(query['customer_id'],new_funds)
-        update_screening_sales(query['screening_id'])
+        update_customer_funds(new_funds)
+        update_screening_sales()
     end
         #update customer records of ticket price deduction
-    def update_customer_funds(id,funds)
+    def update_customer_funds(funds)
+
         sql =   "UPDATE customers SET funds = $1
                  WHERE id = $2"
-        values = [funds,id]
+        values = [funds,@customer_id]
         SqlRunner.run(sql,values)
     end
         #updates screenings ticket sales record, on creation of ticket
-    def update_screening_sales(id)
+    def update_screening_sales()
         sql =   "UPDATE screenings
                 SET (availability,sales)
                 = (availability - 1, sales + 1)
                 WHERE id = $1"
-        values = [id]
+        values = [@screening_id]
         SqlRunner.run(sql,values)
     end
         #read all
