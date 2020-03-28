@@ -11,42 +11,67 @@ class Ticket
     end
         #create & deduct film.price from customer.funds
     def save()
-        sql = "INSERT INTO tickets
-        (
-          customer_id,
-          screening_id
-        )
-        VALUES
-        (
-          $1, $2
-        )
-        RETURNING id"
-        values = [@customer_id, @screening_id]
-        visit = SqlRunner.run(sql,values).first
-        @id = visit['id'].to_i
-        deduct_film_fee_from_customer()
+        available = screen_availability()
+        if available
+            sql = "INSERT INTO tickets
+            (
+              customer_id,
+              screening_id
+            )
+            VALUES
+            (
+              $1, $2
+            )
+            RETURNING id"
+            values = [@customer_id, @screening_id]
+            visit = SqlRunner.run(sql,values).first
+            @id = visit['id'].to_i
+            ticket_sales_transaction()
+        else
+            p "Transaction failed, screening is full"
+    end
+        #check ticket availability for screening
+    def screen_availability
+        sql =   "SELECT availability FROM screenings
+                WHERE id = $1"
+        values = [@screening_id]
+        query = SqlRunner.run(sql,values).first
+        if query['availability'] == 0
+            return false
+        else
+            return true
+        end
     end
         #return all child table information from id
-    def deduct_film_fee_from_customer
-        sql =    "SELECT * FROM tickets
+    def ticket_sales_transaction
+        sql =    "SELECT customers.funds,films.price,tickets.screening_id FROM tickets
                   FULL JOIN customers
                   ON customer_id = customers.id
                   FULL JOIN screenings
-                  ON screening_id = screening.id
+                  ON screening_id = screenings.id
                   FULL JOIN films
-                  ON film_id = film.id
+                  ON film_id = films.id
                   WHERE tickets.id = $1"
         values = [@id]
         query = SqlRunner.run(sql,values).first()
-        p query
         new_funds = query['funds'].to_i - query['price'].to_i
         update_customer_funds(query['customer_id'],new_funds)
+        update_screening_sales(query['screening_id'])
     end
         #update customer records of ticket price deduction
     def update_customer_funds(id,funds)
         sql =   "UPDATE customers SET funds = $1
                  WHERE id = $2"
         values = [funds,id]
+        SqlRunner.run(sql,values)
+    end
+        #updates screenings ticket sales record, on creation of ticket
+    def update_screening_sales(id)
+        sql =   "UPDATE screenings
+                SET (availability,sales)
+                = (availability - 1, sales + 1)
+                WHERE id = $1"
+        values = [id]
         SqlRunner.run(sql,values)
     end
         #read all
