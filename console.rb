@@ -11,6 +11,8 @@ while loop_program == "1"
     p "3. get all films viewed by 1 customer"
     p "4. get all customers who has seen a film"
     p "5. total tickets by 1 customer"
+    p "6. Number of customers seeing 1 film"
+    p "7. Highest screening sale in 1 film"
     case gets.chomp
         when "1"
             Customer.delete_all
@@ -173,6 +175,11 @@ while loop_program == "1"
             anwer = gets.chomp
             query = Film.all_customers(answer.to_i)
             p "Film has had a total of #{query} customer sales"
+        when "7"
+            p "enter film id"
+            answer = gets.chomp
+            query = Film.highest_screening_sales(answer.to_i)
+            p "The #{query} showing had the most sales"
     end
     p "1.Loop program 2.end program"
     loop_program = gets.chomp

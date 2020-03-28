@@ -59,7 +59,17 @@ class Film
         query = SqlRunner.run(sql,values).first
         return query['count']
     end
-
+        #Show highest showtime sales in a films screenings
+    def Film.highest_screening_sales(id)
+        sql =   "SELECT *
+                FROM screenings
+                WHERE film_id = $1
+                ORDER BY sales DESC
+                "
+        values = [id]
+        query = SqlRunner.run(sql,values).first
+        return query['showtime']
+    end
         #delete all
     def Film.delete_all()
         sql = "DELETE FROM films"
