@@ -12,7 +12,7 @@ class Ticket
         #create & deduct film.price from customer.funds
     def save()
         available = screen_availability()
-        if available
+        if available == true
             sql = "INSERT INTO tickets
             (
               customer_id,
@@ -29,6 +29,7 @@ class Ticket
             ticket_sales_transaction()
         else
             p "Transaction failed, screening is full"
+        end
     end
         #check ticket availability for screening
     def screen_availability
@@ -36,10 +37,11 @@ class Ticket
                 WHERE id = $1"
         values = [@screening_id]
         query = SqlRunner.run(sql,values).first
-        if query['availability'] == 0
+        if query['availability'] == "0"
             return false
         else
             return true
+
         end
     end
         #return all child table information from id
