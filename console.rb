@@ -13,6 +13,7 @@ while loop_program == "1"
     p "5. total tickets by 1 customer"
     p "6. Number of customers seeing 1 film"
     p "7. Highest screening sale in 1 film"
+    p "8. list showtimes of film"
     case gets.chomp
         when "1"
             Customer.delete_all
@@ -180,6 +181,12 @@ while loop_program == "1"
             answer = gets.chomp
             query = Film.highest_screening_sales(answer.to_i)
             p "The #{query} showing had the most sales"
+        when "8"
+            p "enter film id"
+            answer = gets.chomp
+            query = Film.screen_times(answer.to_i)
+            p "Screen time for film is:"
+            query.each{|time| p "#{time['showtime']}"}
     end
     p "1.Loop program 2.end program"
     loop_program = gets.chomp

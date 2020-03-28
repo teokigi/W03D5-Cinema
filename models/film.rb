@@ -70,6 +70,15 @@ class Film
         query = SqlRunner.run(sql,values).first
         return query['showtime']
     end
+        #Screen times
+    def Film.screen_times(id)
+        sql =   "SELECT showtime
+                FROM screenings
+                WHERE film_id = $1"
+        values = [id]
+        query = SqlRunner.run(sql,values)
+        return query.map{|timings|timings}
+    end
         #delete all
     def Film.delete_all()
         sql = "DELETE FROM films"
